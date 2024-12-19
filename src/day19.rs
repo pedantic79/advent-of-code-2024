@@ -8,29 +8,19 @@ pub struct Input {
 }
 
 impl Input {
-    fn solve1<'a>(&'a self, towels: &'a str) -> Option<Vec<&'a str>> {
+    fn solve1<'a>(&'a self, towel: &'a str) -> Option<Vec<&'a str>> {
         dfs(
-            towels,
-            |s| {
-                self.towels
-                    .iter()
-                    .filter_map(move |t| s.strip_prefix(t))
-                    .collect::<Vec<_>>()
-            },
-            |s: &&str| s.is_empty(),
+            towel,
+            |&s| self.towels.iter().filter_map(move |t| s.strip_prefix(t)),
+            |&s: &&str| s.is_empty(),
         )
     }
 
-    fn solve2(&self, towels: &str) -> usize {
+    fn solve2(&self, towel: &str) -> usize {
         count_paths(
-            towels,
-            |s| {
-                self.towels
-                    .iter()
-                    .filter_map(move |t| s.strip_prefix(t))
-                    .collect::<Vec<_>>()
-            },
-            |s| s.is_empty(),
+            towel,
+            |&s| self.towels.iter().filter_map(move |t| s.strip_prefix(t)),
+            |&s| s.is_empty(),
         )
     }
 }
