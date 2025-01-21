@@ -4,32 +4,10 @@ use itertools::Itertools;
 use petgraph::graph::{NodeIndex, UnGraph};
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 
-use crate::common::parse::parse_split_once;
-
-#[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
-pub struct SStr([u8; 2]);
-
-impl std::str::FromStr for SStr {
-    type Err = std::array::TryFromSliceError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        s.as_bytes().try_into().map(Self)
-    }
-}
-
-impl SStr {
-    fn as_str(&self) -> &str {
-        // SAFETY: node_weight's are all [u8; 2] and ascii
-        unsafe { std::str::from_utf8_unchecked(self.0.as_slice()) }
-    }
-
-    fn starts_with(&self, p: u8) -> bool {
-        self.0[0] == p
-    }
-}
+use crate::common::{parse::parse_split_once, sstr::SStr};
 
 #[aoc_generator(day23)]
-pub fn generator(input: &str) -> UnGraph<SStr, ()> {
+pub fn generator(input: &str) -> UnGraph<SStr<2>, ()> {
     let mut graph = UnGraph::new_undirected();
     let mut node_map = HashMap::new();
 
@@ -45,7 +23,7 @@ pub fn generator(input: &str) -> UnGraph<SStr, ()> {
 }
 
 #[aoc(day23, part1)]
-pub fn part1(graph: &UnGraph<SStr, ()>) -> usize {
+pub fn part1(graph: &UnGraph<SStr<2>, ()>) -> usize {
     let mut triangles = HashSet::new();
 
     for edge in graph.edge_indices() {
@@ -71,7 +49,7 @@ pub fn part1(graph: &UnGraph<SStr, ()>) -> usize {
 }
 
 fn bron_kerbosch(
-    graph: &UnGraph<SStr, ()>,
+    graph: &UnGraph<SStr<2>, ()>,
     r: &mut HashSet<NodeIndex>,
     mut p: HashSet<NodeIndex>,
     mut x: HashSet<NodeIndex>,
@@ -104,7 +82,7 @@ fn bron_kerbosch(
 }
 
 #[aoc(day23, part2)]
-pub fn part2(graph: &UnGraph<SStr, ()>) -> String {
+pub fn part2(graph: &UnGraph<SStr<2>, ()>) -> String {
     // let mut max_clique = std::collections::HashSet::new();
 
     // pathfinding::undirected::cliques::maximal_cliques(

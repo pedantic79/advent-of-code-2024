@@ -2,33 +2,15 @@ use ahash::{HashMap, HashMapExt};
 use aoc_runner_derive::{aoc, aoc_generator};
 use itertools::Itertools;
 
-#[derive(Hash, PartialEq, Eq, Clone, Copy, PartialOrd, Ord)]
-pub struct SStr([u8; 3]);
+use crate::common::sstr::SStr;
 
-impl std::str::FromStr for SStr {
-    type Err = std::array::TryFromSliceError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        s.as_bytes().try_into().map(Self)
-    }
+trait Extension {
+    fn make_wire(start: u8, number: u8) -> Self;
+    fn is_xy(&self) -> bool;
+    fn is_xy00(&self) -> bool;
 }
 
-impl std::fmt::Debug for SStr {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.as_str())
-    }
-}
-
-impl SStr {
-    fn as_str(&self) -> &str {
-        // SAFETY: node_weight's are all [u8; 3] and ascii
-        unsafe { std::str::from_utf8_unchecked(self.0.as_slice()) }
-    }
-
-    fn starts_with(&self, p: u8) -> bool {
-        self.0[0] == p
-    }
-
+impl Extension for SStr<3> {
     fn make_wire(start: u8, number: u8) -> Self {
         let a = number / 10;
         let b = number % 10;
@@ -36,7 +18,7 @@ impl SStr {
         assert!(a < 10);
         assert!(b < 10);
 
-        Self([start, b'0' + a, b'0' + b])
+        Self::from([start, b'0' + a, b'0' + b])
     }
 
     fn is_xy(&self) -> bool {
@@ -51,13 +33,13 @@ impl SStr {
 #[derive(Debug, PartialEq, Eq, Clone, Copy, PartialOrd, Ord)]
 pub enum Kind {
     Value(u8),
-    And(SStr, SStr),
-    Or(SStr, SStr),
-    Xor(SStr, SStr),
+    And(SStr<3>, SStr<3>),
+    Or(SStr<3>, SStr<3>),
+    Xor(SStr<3>, SStr<3>),
 }
 
 #[aoc_generator(day24)]
-pub fn generator(input: &str) -> HashMap<SStr, Kind> {
+pub fn generator(input: &str) -> HashMap<SStr<3>, Kind> {
     let mut hm = HashMap::new();
     let (inputs, gates) = input.split_once("\n\n").unwrap();
 
@@ -71,9 +53,9 @@ pub fn generator(input: &str) -> HashMap<SStr, Kind> {
 
     for line in gates.lines() {
         let mut token = line.split(' ');
-        let b1: SStr = token.next().unwrap().parse().unwrap();
+        let b1: SStr<3> = token.next().unwrap().parse().unwrap();
         let op = token.next().unwrap();
-        let b2: SStr = token.next().unwrap().parse().unwrap();
+        let b2: SStr<3> = token.next().unwrap().parse().unwrap();
         let _ = token.next().unwrap();
         let b3 = token.next().unwrap().parse().unwrap();
 
@@ -96,8 +78,12 @@ pub fn generator(input: &str) -> HashMap<SStr, Kind> {
     hm
 }
 
-fn solve_p1(inputs: &HashMap<SStr, Kind>, cache: &mut HashMap<SStr, u8>) {
-    fn recurse(key: SStr, inputs: &HashMap<SStr, Kind>, cache: &mut HashMap<SStr, u8>) -> u8 {
+fn solve_p1(inputs: &HashMap<SStr<3>, Kind>, cache: &mut HashMap<SStr<3>, u8>) {
+    fn recurse(
+        key: SStr<3>,
+        inputs: &HashMap<SStr<3>, Kind>,
+        cache: &mut HashMap<SStr<3>, u8>,
+    ) -> u8 {
         if let Some(v) = cache.get(&key).copied() {
             return v;
         }
@@ -135,7 +121,7 @@ fn solve_p1(inputs: &HashMap<SStr, Kind>, cache: &mut HashMap<SStr, u8>) {
 }
 
 #[aoc(day24, part1)]
-pub fn part1(inputs: &HashMap<SStr, Kind>) -> u64 {
+pub fn part1(inputs: &HashMap<SStr<3>, Kind>) -> u64 {
     let mut values = Default::default();
     solve_p1(inputs, &mut values);
 
@@ -148,7 +134,7 @@ pub fn part1(inputs: &HashMap<SStr, Kind>) -> u64 {
 }
 
 #[aoc(day24, part2)]
-pub fn part2(inputs: &HashMap<SStr, Kind>) -> String {
+pub fn part2(inputs: &HashMap<SStr<3>, Kind>) -> String {
     // When visualizing the input, you will see that it is a full-adder
     // with xNN and yNN as the input bit, and zNN is the output bit
     //
@@ -159,10 +145,10 @@ pub fn part2(inputs: &HashMap<SStr, Kind>) -> String {
     // xyADD[n] & CARRY[n - 1] => AND[n]
     // xyCARRY[n] | AND[n] => CARRY[n]
 
-    let mut wrongs: Vec<&SStr> = Vec::with_capacity(8);
+    let mut wrongs: Vec<&SStr<3>> = Vec::with_capacity(8);
     let mut xy_adds = Vec::with_capacity(45);
     let mut xy_carries = Vec::with_capacity(45);
-    let mut z: Vec<(SStr, SStr, SStr)> = Vec::with_capacity(45);
+    let mut z: Vec<(SStr<3>, SStr<3>, SStr<3>)> = Vec::with_capacity(45);
     let mut ands = Vec::with_capacity(45);
     let mut carries = Vec::with_capacity(45);
 
