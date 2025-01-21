@@ -144,7 +144,7 @@ pub fn part1(inputs: &HashMap<SStr, Kind>) -> u64 {
         .filter(|(k, _)| k.starts_with(b'z'))
         .sorted_by_key(|(k, _)| *k)
         .enumerate()
-        .fold(0, |acc, (i, (_, v))| acc | u64::from(*v) << (i as u64))
+        .fold(0, |acc, (i, (_, v))| acc | (u64::from(*v) << (i as u64)))
 }
 
 #[aoc(day24, part2)]

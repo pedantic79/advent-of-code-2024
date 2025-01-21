@@ -81,7 +81,7 @@ fn solve_part1<const H: usize, const W: usize>(times: usize, mut robots: Vec<Rob
         let y = usize::from(r.pos.0 < mid.0);
         let x = usize::from(r.pos.1 < mid.1);
 
-        counts[y << 1 | x] += 1;
+        counts[(y << 1) | x] += 1;
     }
     counts.iter().product()
 }
