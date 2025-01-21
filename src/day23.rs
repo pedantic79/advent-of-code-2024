@@ -105,6 +105,18 @@ fn bron_kerbosch(
 
 #[aoc(day23, part2)]
 pub fn part2(graph: &UnGraph<SStr, ()>) -> String {
+    // let mut max_clique = std::collections::HashSet::new();
+
+    // pathfinding::undirected::cliques::maximal_cliques(
+    //     graph.node_indices(),
+    //     &mut |a, b| graph.contains_edge(*a, *b),
+    //     &mut |hs| {
+    //         if max_clique.len() < hs.len() {
+    //             max_clique = hs.clone();
+    //         }
+    //     },
+    // );
+
     let mut max_clique = HashSet::new();
 
     bron_kerbosch(
