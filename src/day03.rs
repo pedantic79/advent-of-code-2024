@@ -5,7 +5,7 @@ use nom::{
     character::complete::anychar,
     combinator::map,
     multi::{many0, many_till},
-    sequence, IResult,
+    sequence, IResult, Parser,
 };
 
 use crate::common::nom::nom_usize;
@@ -28,7 +28,7 @@ fn parse_symbol(s: &str) -> IResult<&str, Symbols> {
     ));
 
     // skips junk until symbols produces a result
-    let (s, (_, mul)) = many_till(anychar, symbols)(s)?;
+    let (s, (_, mul)) = many_till(anychar, symbols).parse(s)?;
     Ok((s, mul))
 }
 
@@ -42,7 +42,7 @@ fn parse_mul(s: &str) -> IResult<&str, usize> {
 
 #[aoc_generator(day3)]
 pub fn generator(input: &str) -> Vec<Symbols> {
-    many0(parse_symbol)(input).unwrap().1
+    many0(parse_symbol).parse(input).unwrap().1
 }
 
 #[aoc(day3, part1)]

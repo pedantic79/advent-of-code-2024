@@ -1,5 +1,5 @@
 use aoc_runner_derive::{aoc, aoc_generator};
-use nom::{bytes::complete::tag, sequence::separated_pair, IResult};
+use nom::{bytes::complete::tag, sequence::separated_pair, IResult, Parser};
 
 use crate::common::{
     nom::{nom_isize, nom_lines, nom_usize, process_input},
@@ -17,9 +17,9 @@ pub struct Robot {
 impl Robot {
     fn parse(s: &str) -> IResult<&str, Self> {
         let (s, _) = tag("p=")(s)?;
-        let (s, (px, py)) = separated_pair(nom_usize, tag(","), nom_usize)(s)?;
+        let (s, (px, py)) = separated_pair(nom_usize, tag(","), nom_usize).parse(s)?;
         let (s, _) = tag(" v=")(s)?;
-        let (s, (vx, vy)) = separated_pair(nom_isize, tag(","), nom_isize)(s)?;
+        let (s, (vx, vy)) = separated_pair(nom_isize, tag(","), nom_isize).parse(s)?;
 
         Ok((
             s,
