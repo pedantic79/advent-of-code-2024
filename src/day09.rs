@@ -36,11 +36,11 @@ pub fn generator(input: &str) -> (Vec<i64>, Vec<Group>) {
     for (c, is_file) in input.chars().zip([true, false].into_iter().cycle()) {
         let n = c.to_digit(10).unwrap() as usize;
         if is_file {
-            p1.extend(iter::repeat(file_id).take(n));
+            p1.extend(iter::repeat_n(file_id, n));
             p2.push(Group::new(file_id, n));
             file_id += 1;
         } else {
-            p1.extend(iter::repeat(-1).take(n));
+            p1.extend(iter::repeat_n(-1, n));
             p2.push(Group::new(-1, n));
         }
     }
