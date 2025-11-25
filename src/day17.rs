@@ -1,7 +1,7 @@
 use std::fmt::Write;
 
 use aoc_runner_derive::{aoc, aoc_generator};
-use nom::{bytes::complete::tag, sequence::preceded, IResult, Parser};
+use nom::{IResult, Parser, bytes::complete::tag, sequence::preceded};
 
 use crate::common::parse::parse_split;
 
@@ -163,10 +163,10 @@ fn solve_p2(a: IntType, target: &[IntType], ins: &[IntType]) -> Option<IntType> 
         // }
 
         let candidate = (a << 3) + i;
-        if run_computer(candidate, ins, true)[0] == last_ins {
-            if let Some(res) = solve_p2(candidate, &target[0..last], ins) {
-                return Some(res);
-            }
+        if run_computer(candidate, ins, true)[0] == last_ins
+            && let Some(res) = solve_p2(candidate, &target[0..last], ins)
+        {
+            return Some(res);
         }
     }
 
