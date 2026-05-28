@@ -1,7 +1,7 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 use pathfinding::matrix::{
-    directions::{self},
     Matrix,
+    directions::{self},
 };
 use smallstr::SmallString;
 

@@ -1,5 +1,5 @@
 use aoc_runner_derive::{aoc, aoc_generator};
-use nom::{bytes::complete::tag, sequence::separated_pair, IResult, Parser};
+use nom::{IResult, Parser, bytes::complete::tag, sequence::separated_pair};
 
 use crate::common::{
     nom::{nom_isize, nom_lines, nom_usize, process_input},

@@ -1,10 +1,10 @@
-use std::hash::BuildHasherDefault;
-
-use ahash::{AHasher, HashMap, HashMapExt};
+use ahash::{AHasher, HashMapExt};
 use aoc_runner_derive::{aoc, aoc_generator};
 use dashmap::DashMap;
-use itertools::{iterate, Itertools};
+use itertools::{Itertools, iterate};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use rustc_hash::FxHashMap as HashMap;
+use std::hash::BuildHasherDefault;
 
 use crate::common::parse::parse_lines;
 

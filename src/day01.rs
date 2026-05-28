@@ -1,5 +1,6 @@
-use ahash::{HashMap, HashMapExt};
+use ahash::HashMapExt;
 use aoc_runner_derive::{aoc, aoc_generator};
+use rustc_hash::FxHashMap as HashMap;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Object {

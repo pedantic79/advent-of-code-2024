@@ -1,6 +1,7 @@
-use ahash::{HashMap, HashMapExt};
+use ahash::HashMapExt;
 use aoc_runner_derive::{aoc, aoc_generator};
 use itertools::Itertools;
+use rustc_hash::FxHashMap as HashMap;
 
 use crate::common::sstr::SStr;
 

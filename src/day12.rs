@@ -1,11 +1,11 @@
 use std::collections::VecDeque;
 
-use ahash::HashSet;
 use aoc_runner_derive::{aoc, aoc_generator};
 use pathfinding::{
     matrix::directions::{self, DIRECTIONS_4},
     utils::move_in_direction,
 };
+use rustc_hash::FxHashSet as HashSet;
 
 use crate::common::utils::build_array;
 

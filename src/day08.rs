@@ -1,8 +1,9 @@
 use std::iter::successors;
 
-use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
+use ahash::{HashMapExt, HashSetExt};
 use aoc_runner_derive::{aoc, aoc_generator};
 use itertools::Itertools;
+use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 
 type Point = (usize, usize);
 
@@ -36,11 +37,7 @@ pub const fn checked_signed_diff(lhs: usize, rhs: usize) -> Option<isize> {
     let res = lhs.wrapping_sub(rhs) as isize;
     let overflow = (lhs >= rhs) == (res < 0);
 
-    if !overflow {
-        Some(res)
-    } else {
-        None
-    }
+    if !overflow { Some(res) } else { None }
 }
 
 fn checked_add_pos(v: Point, x: Point, y: Point, size: Point) -> Option<Point> {

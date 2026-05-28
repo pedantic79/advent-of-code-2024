@@ -1,7 +1,7 @@
-use ahash::HashMap;
 use aoc_runner_derive::{aoc, aoc_generator};
 use itertools::Itertools;
 use pathfinding::{matrix::directions::DIRECTIONS_4, prelude::astar_bag, utils::move_in_direction};
+use rustc_hash::FxHashMap as HashMap;
 
 type Pad<'a> = &'a [&'a [u8]];
 type Position = (usize, usize);

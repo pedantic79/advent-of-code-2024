@@ -1,11 +1,12 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 use nom::{
+    IResult, Parser,
     branch::alt,
     bytes::complete::tag,
     character::complete::anychar,
     combinator::map,
-    multi::{many0, many_till},
-    sequence, IResult, Parser,
+    multi::{many_till, many0},
+    sequence,
 };
 
 use crate::common::nom::nom_usize;

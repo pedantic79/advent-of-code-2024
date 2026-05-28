@@ -1,5 +1,6 @@
-use ahash::{HashMap, HashSet, HashSetExt};
+use ahash::HashSetExt;
 use aoc_runner_derive::{aoc, aoc_generator};
+use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 
 #[derive(Debug)]
 pub struct Input {
