@@ -91,7 +91,7 @@ pub fn part2(maze: &Maze) -> usize {
     .0
     .flat_map(|v| v.into_iter().map(|(p, _)| p.0 * width + p.1))
     .collect::<BitSet<usize>>()
-    .len()
+    .count()
 }
 
 #[cfg(test)]

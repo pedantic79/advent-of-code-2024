@@ -61,8 +61,8 @@ pub fn part1(Input { map, size }: &Input) -> usize {
         for x in pos.iter().combinations(2) {
             let (a, b) = (*x[0], *x[1]);
 
-            points.extend(checked_add_pos(a, a, b, *size).into_iter());
-            points.extend(checked_add_pos(b, b, a, *size).into_iter());
+            points.extend(checked_add_pos(a, a, b, *size));
+            points.extend(checked_add_pos(b, b, a, *size));
         }
     }
 
