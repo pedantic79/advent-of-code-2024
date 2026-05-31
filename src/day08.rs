@@ -32,21 +32,10 @@ pub fn generator(input: &str) -> Input {
     }
 }
 
-// this is a copy from feature(unsigned_signed_diff)
-pub const fn checked_signed_diff(lhs: usize, rhs: usize) -> Option<isize> {
-    let res = lhs.wrapping_sub(rhs) as isize;
-    let overflow = (lhs >= rhs) == (res < 0);
-
-    if !overflow { Some(res) } else { None }
-}
-
 fn checked_add_pos(v: Point, x: Point, y: Point, size: Point) -> Option<Point> {
     pathfinding::utils::move_in_direction(
         v,
-        (
-            checked_signed_diff(x.0, y.0)?,
-            checked_signed_diff(x.1, y.1)?,
-        ),
+        (x.0.checked_signed_diff(y.0)?, x.1.checked_signed_diff(y.1)?),
         size,
     )
 }
