@@ -36,7 +36,7 @@ pub fn part1(graph: &UnGraph<SStr<2>, ()>) -> usize {
 
                 if triangle
                     .iter()
-                    .any(|x| graph.node_weight(*x).unwrap().starts_with(b't'))
+                    .any(|x| graph.node_weight(*x).unwrap().starts_with_byte(b't'))
                 {
                     triangle.sort_unstable();
                     triangles.insert(triangle);

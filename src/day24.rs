@@ -23,7 +23,7 @@ impl Extension for SStr<3> {
     }
 
     fn is_xy(&self) -> bool {
-        self.starts_with(b'x') || self.starts_with(b'y')
+        self.starts_with_byte(b'x') || self.starts_with_byte(b'y')
     }
 
     fn is_xy00(&self) -> bool {
@@ -60,7 +60,7 @@ pub fn generator(input: &str) -> HashMap<SStr<3>, Kind> {
         let _ = token.next().unwrap();
         let b3 = token.next().unwrap().parse().unwrap();
 
-        let (b1, b2) = if b1.starts_with(b'y') && b2.starts_with(b'x') {
+        let (b1, b2) = if b1.starts_with_byte(b'y') && b2.starts_with_byte(b'x') {
             (b2, b1)
         } else {
             (b1, b2)
@@ -116,7 +116,7 @@ fn solve_p1(inputs: &HashMap<SStr<3>, Kind>, cache: &mut HashMap<SStr<3>, u8>) {
         }
     }
 
-    for k in inputs.keys().filter(|k| k.starts_with(b'z')) {
+    for k in inputs.keys().filter(|k| k.starts_with_byte(b'z')) {
         recurse(*k, inputs, cache);
     }
 }
@@ -128,7 +128,7 @@ pub fn part1(inputs: &HashMap<SStr<3>, Kind>) -> u64 {
 
     values
         .iter()
-        .filter(|(k, _)| k.starts_with(b'z'))
+        .filter(|(k, _)| k.starts_with_byte(b'z'))
         .sorted_by_key(|(k, _)| *k)
         .enumerate()
         .fold(0, |acc, (i, (_, v))| acc | (u64::from(*v) << (i as u64)))
@@ -192,7 +192,7 @@ pub fn part2(inputs: &HashMap<SStr<3>, Kind>) -> String {
             .iter()
             .filter(|(_, a, _)| !a.is_xy00())
             .filter(|(dest, _, _)| {
-                dest.starts_with(b'z') || z.iter().all(|(_, za, zb)| za != dest && zb != dest)
+                dest.starts_with_byte(b'z') || z.iter().all(|(_, za, zb)| za != dest && zb != dest)
             })
             .map(|(dest, _, _)| dest),
     );
@@ -203,7 +203,7 @@ pub fn part2(inputs: &HashMap<SStr<3>, Kind>) -> String {
             .iter()
             .filter(|(_, a, _)| !a.is_xy00())
             .filter(|(dest, _, _)| {
-                dest.starts_with(b'z') || carries.iter().all(|(_, ca, cb)| ca != dest && cb != dest)
+                dest.starts_with_byte(b'z') || carries.iter().all(|(_, ca, cb)| ca != dest && cb != dest)
             })
             .map(|(dest, _, _)| dest),
     );
@@ -211,7 +211,7 @@ pub fn part2(inputs: &HashMap<SStr<3>, Kind>) -> String {
     // if the z output doesn't start with a z, then it is wrong
     wrongs.extend(
         z.iter()
-            .filter(|(dest, _, _)| !dest.starts_with(b'z'))
+            .filter(|(dest, _, _)| !dest.starts_with_byte(b'z'))
             .map(|(dest, _, _)| dest),
     );
 
@@ -220,7 +220,7 @@ pub fn part2(inputs: &HashMap<SStr<3>, Kind>) -> String {
         carries
             .iter()
             .filter(|(dest, _, _)| {
-                dest.starts_with(b'z') && *dest != SStr::make_wire(b'z', (z.len() + 1) as u8)
+                dest.starts_with_byte(b'z') && *dest != SStr::make_wire(b'z', (z.len() + 1) as u8)
             })
             .map(|(dest, _, _)| dest),
     );
@@ -228,7 +228,7 @@ pub fn part2(inputs: &HashMap<SStr<3>, Kind>) -> String {
     // if the and output is a z-register then it is wrong
     wrongs.extend(
         ands.iter()
-            .filter(|(dest, _, _)| dest.starts_with(b'z'))
+            .filter(|(dest, _, _)| dest.starts_with_byte(b'z'))
             .map(|(dest, _, _)| dest),
     );
 
